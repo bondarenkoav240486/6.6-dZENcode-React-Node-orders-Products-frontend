@@ -1,13 +1,19 @@
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../redux/store';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState, AppDispatch } from '../redux/store';
+import { fetchProducts } from '../redux/slices/productsSlice';
 import { format } from 'date-fns';
 import { enUS, uk, Locale } from 'date-fns/locale';
 
 const Products = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const products = useSelector((state: RootState) => state.products.products);
   const orders = useSelector((state: RootState) => state.orders.orders);
   const [selectedType, setSelectedType] = useState<string>('');
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
 
   const handleTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedType(event.target.value);

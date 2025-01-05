@@ -1,11 +1,9 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 interface Product {
   id: string;
-//    id: number; // Змінено тип даних з string на number
-//   name: string;
-//   price: number;
-  amount: number; // Додано властивість amount
+  amount: number;
 }
 
 interface Order {
@@ -14,7 +12,6 @@ interface Order {
   date: string;
   description: string;
   products: Product[];
-//   products: [];
 }
 
 interface OrdersState {
@@ -22,39 +19,13 @@ interface OrdersState {
 }
 
 const initialState: OrdersState = {
-  orders: [
-    {
-      id: 1,
-      title: 'Order 1',
-      date: '2017-06-29 12:09:33',
-      description: 'desc',
-      products: [
-        { id: '1', amount: 1 },
-        { id: '2', amount: 2 },
-      ] // Заповніть відповідними даними
-    },
-    {
-      id: 2,
-      title: 'Order 2',
-      date: '2017-06-29 12:09:33',
-      description: 'desc',
-      products: [
-        { id: '1', amount: 3 },
-        { id: '2', amount: 4 },
-      ] // Заповніть відповідними даними
-    },
-    {
-      id: 3,
-      title: 'Order 3',
-      date: '2017-06-29 12:09:33',
-      description: 'desc',
-      products: [
-        { id: '1', amount: 4 },
-        { id: '2', amount: 5 },
-      ] // Заповніть відповідними даними
-    }
-  ],
+  orders: [],
 };
+
+export const fetchOrders = createAsyncThunk('orders/fetchOrders', async () => {
+  const response = await axios.get('http://localhost:3001/api/orders');
+  return response.data;
+});
 
 const ordersSlice = createSlice({
   name: 'orders',
@@ -66,6 +37,11 @@ const ordersSlice = createSlice({
     removeOrder(state, action: PayloadAction<number>) {
       state.orders = state.orders.filter(order => order.id !== action.payload);
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchOrders.fulfilled, (state, action) => {
+      state.orders = action.payload;
+    });
   },
 });
 
