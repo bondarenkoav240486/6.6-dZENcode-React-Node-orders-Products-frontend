@@ -2,100 +2,123 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../redux/store';
 import { fetchOrders, removeOrder } from '../redux/slices/ordersSlice';
+import { fetchProducts } from '../redux/slices/productsSlice';
 import { format } from 'date-fns';
 import { enUS, uk, Locale } from 'date-fns/locale';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const Orders = () => {
-    const dispatch = useDispatch<AppDispatch>();
-    const orders = useSelector((state: RootState) => state.orders.orders);
-    const products = useSelector((state: RootState) => state.products.products);
-    const [selectedOrder, setSelectedOrder] = useState<number | null>(null);
-    const [showPopup, setShowPopup] = useState<boolean>(false);
+  const dispatch = useDispatch<AppDispatch>();
+  const orders = useSelector((state: RootState) => state.orders.orders);
+  const products = useSelector((state: RootState) => state.products.products);
+  const [selectedOrder, setSelectedOrder] = useState<number | null>(null);
+  const [showPopup, setShowPopup] = useState<boolean>(false);
 
-    useEffect(() => {
-        dispatch(fetchOrders());
-    }, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchOrders());
+    dispatch(fetchProducts());
+  }, [dispatch]);
 
-    const handleOrderClick = (orderId: number) => {
-        setSelectedOrder(orderId === selectedOrder ? null : orderId);
-    };
+  const handleOrderClick = (orderId: number) => {
+    setSelectedOrder(orderId === selectedOrder ? null : orderId);
+  };
 
-    const handleDeleteClick = () => {
-        // debugger;
-        if (selectedOrder !== null) {
-            dispatch(removeOrder(selectedOrder));
-            setSelectedOrder(null);
-            setShowPopup(false);
-            // debugger;
-        }
-    };
+  const handleDeleteClick = () => {
+    if (selectedOrder !== null) {
+      dispatch(removeOrder(selectedOrder));
+      setSelectedOrder(null);
+      setShowPopup(false);
+    }
+  };
 
-    const formatDate = (dateString: string, locale: Locale) => {
-        const date = new Date(dateString);
-        return format(date, 'PPPP', { locale });
-    };
+  const formatDate = (dateString: string, locale: Locale) => {
+    const date = new Date(dateString);
+    return format(date, 'PPPP', { locale });
+  };
 
-    const calculateTotal = (orderProducts: { id: string; amount: number }[]) => {
-        return orderProducts.reduce((total, orderProduct) => {
-            const product = products.find(p => p.id === parseInt(orderProduct.id));
-            if (product) {
-                const usdPrice = product.price.find(p => p.symbol === 'USD')?.value || 0;
-                return total + usdPrice * orderProduct.amount;
-            }
-            return total;
-        }, 0);
-    };
+  const calculateTotal = (orderId: number, currency: string) => {
+    const orderProducts = products.filter(product => product.order === orderId);
+    return orderProducts.reduce((total, product) => {
+      const price = product.price.find(p => p.symbol === currency)?.value || 0;
+      return total + price;
+    }, 0);
+  };
 
-    const calculateProductCount = (orderProducts: { id: string; amount: number }[]) => {
-        return orderProducts.reduce((total, orderProduct) => total + orderProduct.amount, 0);
-    };
+  const calculateProductCount = (orderId: number) => {
+    const orderProducts = products.filter(product => product.order === orderId);
+    return orderProducts.length;
+  };
 
-    return (
-        <div className='orders d-flex'>
-            <div className='orders-list '>
-            {orders.map(order => (
-                <div key={order.id} className='d-flex' onClick={() => handleOrderClick(order.id)}>
-                    <h3>{order.title}</h3>
-                    {/* <p>Products count: {calculateProductCount(order.products)}</p> */}
-                    {/* <p>Date (en-US): {formatDate(order.date, enUS)}</p> */}
-                    {/* <p>Date (uk): {formatDate(order.date, uk)}</p> */}
-                    {/* <p>Total (USD): ${calculateTotal(order.products).toFixed(2)}</p> */}
-                    {/* <p>Total (UAH): ₴{(calculateTotal(order.products) * 26).toFixed(2)}</p> */}
-                    {/* <button onClick={() => setShowPopup(true)}>Delete</button> */}
-                </div>
+  return (
+    <div className='orders d-flex '>
+      <div>
+        {orders.map(order => (
+          <motion.div
+            key={order.id}
+            className='d-flex'
+            onClick={() => handleOrderClick(order.id)}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <h3>{order.title}</h3>
+            {/* <p>Products count: {calculateProductCount(order.id)}</p>
+            <p>Date (en-US): {formatDate(order.date, enUS)}</p>
+            <p>Date (uk): {formatDate(order.date, uk)}</p>
+            <p>Total (USD): ${calculateTotal(order.id, 'USD').toFixed(2)}</p>
+            <p>Total (UAH): ₴{calculateTotal(order.id, 'UAH').toFixed(2)}</p>
+            <button onClick={() => setShowPopup(true)}>Delete</button> */}
+          </motion.div>
+        ))}
+      </div>
+
+      <AnimatePresence  mode='wait'>
+        {selectedOrder !== null && (
+          <motion.div
+            key={selectedOrder}
+            className='order-details'
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <h3>Order Details</h3>
+            {orders.filter(order => order.id === selectedOrder).map(order => (
+              <div key={order.id}>
+                <h3>{order.title}</h3>
+                <p>Products count: {calculateProductCount(order.id)}</p>
+                <p>Date (en-US): {formatDate(order.date, enUS)}</p>
+                <p>Date (uk): {formatDate(order.date, uk)}</p>
+                <p>Total (USD): ${calculateTotal(order.id, 'USD').toFixed(2)}</p>
+                <p>Total (UAH): ₴{calculateTotal(order.id, 'UAH').toFixed(2)}</p>
+                <button onClick={() => setShowPopup(true)}>Delete</button>
+                <h4>Products:</h4>
+                <ul>
+                  {products.filter(product => product.order === order.id).map(product => (
+                    <li key={product.id}>
+                      {product.title} - {product.type} - ${product.price.find(p => p.symbol === 'USD')?.value} - ₴{product.price.find(p => p.symbol === 'UAH')?.value}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             ))}
-            </div>
+            <button onClick={() => setSelectedOrder(null)}>Close</button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-            {selectedOrder !== null && (
-                <div className='order-details '>
-                    <h3>Order Details</h3>
-                    <p>Order ID: {selectedOrder}</p>
-                    {orders.map(order => (
-                        <div key={order.id} className='d-flex' onClick={() => handleOrderClick(order.id)}>
-                            {/* <h3>{order.title}</h3> */}
-                            <p>Products count: {calculateProductCount(order.products)}</p>
-                            <p>Date (en-US): {formatDate(order.date, enUS)}</p>
-                            <p>Date (uk): {formatDate(order.date, uk)}</p>
-                            <p>Total (USD): ${calculateTotal(order.products).toFixed(2)}</p>
-                            <p>Total (UAH): ₴{(calculateTotal(order.products) * 26).toFixed(2)}</p>
-                            <button onClick={() => setShowPopup(true)}>Delete</button>
-                        </div>
-                    ))}
-                    <button onClick={() => setSelectedOrder(null)}>Close</button>
-                </div>
-            )}
-
-            {showPopup && (
-                <div className='popup'>
-                    <div className='popup-content'>
-                        <h3>Are you sure you want to delete this order?</h3>
-                        <button onClick={handleDeleteClick}>Yes</button>
-                        <button onClick={() => setShowPopup(false)}>No</button>
-                    </div>
-                </div>
-            )}
+      {showPopup && (
+        <div className='popup'>
+          <div className='popup-content'>
+            <h3>Are you sure you want to delete this order?</h3>
+            <button onClick={handleDeleteClick}>Yes</button>
+            <button onClick={() => setShowPopup(false)}>No</button>
+          </div>
         </div>
-    );
+      )}
+    </div>
+  );
 };
 
 export default Orders;
