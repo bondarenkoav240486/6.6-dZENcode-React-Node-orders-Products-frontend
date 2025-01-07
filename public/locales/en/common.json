@@ -1,0 +1,21 @@
+{
+  "title": "Orders & Products",
+  "orderDetails": "Order Details",
+  "productsCount": "Products count",
+  "date": "Date",
+  "totalUSD": "Total (USD)",
+  "totalUAH": "Total (UAH)",
+  "delete": "Delete",
+  "close": "Close",
+  "areYouSure": "Are you sure you want to delete this order?",
+  "yes": "Yes",
+  "no": "No",
+  "products": "Products",
+  "allTypes": "All Types",
+  "type": "Type",
+  "guaranteeStart": "Guarantee Start",
+  "guaranteeEnd": "Guarantee End",
+  "priceUSD": "Price (USD)",
+  "priceUAH": "Price (UAH)",
+  "orderTitle": "Order Title"
+}

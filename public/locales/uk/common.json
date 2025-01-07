@@ -1,0 +1,21 @@
+{
+    "title": "Замовлення та Продукти",
+    "orderDetails": "Деталі Замовлення",
+    "productsCount": "Кількість продуктів",
+    "date": "Дата",
+    "totalUSD": "Сума (USD)",
+    "totalUAH": "Сума (UAH)",
+    "delete": "Видалити",
+    "close": "Закрити",
+    "areYouSure": "Ви впевнені, що хочете видалити це замовлення?",
+    "yes": "Так",
+    "no": "Ні",
+    "products": "Продукти",
+    "allTypes": "Всі Типи",
+    "type": "Тип",
+    "guaranteeStart": "Початок Гарантії",
+    "guaranteeEnd": "Кінець Гарантії",
+    "priceUSD": "Ціна (USD)",
+    "priceUAH": "Ціна (UAH)",
+    "orderTitle": "Назва Замовлення"
+  }

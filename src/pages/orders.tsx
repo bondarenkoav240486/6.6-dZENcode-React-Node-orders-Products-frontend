@@ -6,8 +6,10 @@ import { fetchProducts } from '../redux/slices/productsSlice';
 import { format } from 'date-fns';
 import { enUS, uk, Locale } from 'date-fns/locale';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useTranslation } from 'next-i18next';
 
 const Orders = () => {
+  const { t } = useTranslation('common');
   const dispatch = useDispatch<AppDispatch>();
   const orders = useSelector((state: RootState) => state.orders.orders);
   const products = useSelector((state: RootState) => state.products.products);
@@ -63,17 +65,17 @@ const Orders = () => {
             transition={{ duration: 0.3 }}
           >
             <h3>{order.title}</h3>
-            {/* <p>Products count: {calculateProductCount(order.id)}</p>
-            <p>Date (en-US): {formatDate(order.date, enUS)}</p>
-            <p>Date (uk): {formatDate(order.date, uk)}</p>
-            <p>Total (USD): ${calculateTotal(order.id, 'USD').toFixed(2)}</p>
-            <p>Total (UAH): ₴{calculateTotal(order.id, 'UAH').toFixed(2)}</p>
-            <button onClick={() => setShowPopup(true)}>Delete</button> */}
+            {/* <p>{t('productsCount')}: {calculateProductCount(order.id)}</p>
+            <p>{t('date')} (en-US): {formatDate(order.date, enUS)}</p>
+            <p>{t('date')} (uk): {formatDate(order.date, uk)}</p>
+            <p>{t('totalUSD')}: ${calculateTotal(order.id, 'USD').toFixed(2)}</p>
+            <p>{t('totalUAH')}: ₴{calculateTotal(order.id, 'UAH').toFixed(2)}</p>
+            <button onClick={() => setShowPopup(true)}>{t('delete')}</button> */}
           </motion.div>
         ))}
       </div>
 
-      <AnimatePresence  mode='wait'>
+      <AnimatePresence mode='wait'>
         {selectedOrder !== null && (
           <motion.div
             key={selectedOrder}
@@ -83,17 +85,17 @@ const Orders = () => {
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.3 }}
           >
-            <h3>Order Details</h3>
+            <h3>{t('orderDetails')}</h3>
             {orders.filter(order => order.id === selectedOrder).map(order => (
               <div key={order.id}>
                 <h3>{order.title}</h3>
-                <p>Products count: {calculateProductCount(order.id)}</p>
-                <p>Date (en-US): {formatDate(order.date, enUS)}</p>
-                <p>Date (uk): {formatDate(order.date, uk)}</p>
-                <p>Total (USD): ${calculateTotal(order.id, 'USD').toFixed(2)}</p>
-                <p>Total (UAH): ₴{calculateTotal(order.id, 'UAH').toFixed(2)}</p>
-                <button onClick={() => setShowPopup(true)}>Delete</button>
-                <h4>Products:</h4>
+                <p>{t('productsCount')}: {calculateProductCount(order.id)}</p>
+                <p>{t('date')} (en-US): {formatDate(order.date, enUS)}</p>
+                <p>{t('date')} (uk): {formatDate(order.date, uk)}</p>
+                <p>{t('totalUSD')}: ${calculateTotal(order.id, 'USD').toFixed(2)}</p>
+                <p>{t('totalUAH')}: ₴{calculateTotal(order.id, 'UAH').toFixed(2)}</p>
+                <button onClick={() => setShowPopup(true)}>{t('delete')}</button>
+                <h4>{t('products')}:</h4>
                 <ul>
                   {products.filter(product => product.order === order.id).map(product => (
                     <li key={product.id}>
@@ -103,7 +105,7 @@ const Orders = () => {
                 </ul>
               </div>
             ))}
-            <button onClick={() => setSelectedOrder(null)}>Close</button>
+            <button onClick={() => setSelectedOrder(null)}>{t('close')}</button>
           </motion.div>
         )}
       </AnimatePresence>
@@ -111,9 +113,9 @@ const Orders = () => {
       {showPopup && (
         <div className='popup'>
           <div className='popup-content'>
-            <h3>Are you sure you want to delete this order?</h3>
-            <button onClick={handleDeleteClick}>Yes</button>
-            <button onClick={() => setShowPopup(false)}>No</button>
+            <h3>{t('areYouSure')}</h3>
+            <button onClick={handleDeleteClick}>{t('yes')}</button>
+            <button onClick={() => setShowPopup(false)}>{t('no')}</button>
           </div>
         </div>
       )}
