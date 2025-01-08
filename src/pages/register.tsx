@@ -1,56 +1,70 @@
-import { useState, FormEvent } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { setAuthenticated } from '../redux/slices/authSlice';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
+interface IFormInput {
+  email: string;
+  password: string;
+}
+
+// Створення схеми валідації з використанням Yup
+const schema = yup.object().shape({
+  email: yup.string().email('Invalid email address').required('Email is required'),
+  password: yup.string().min(8, 'Пароль повинен містити мінімум 8 символів').required('Password is required'),
+});
 
 const RegisterPage = () => {
-  const [username, setUsername] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const { register, handleSubmit, formState: { errors } } = useForm<IFormInput>({
+    resolver: yupResolver(schema),
+  });
   const [message, setMessage] = useState<string>('');
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const handleRegister = async (e: FormEvent) => {
-    e.preventDefault();
-
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     const response = await fetch('http://localhost:3001/api/auth/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify(data),
     });
 
-    const data = await response.json();
+    const result = await response.json();
     if (response.ok) {
-      setMessage('Registration successful. You are log in.');
-    //   router.push('/auth');
+      setMessage('Registration successful. You are logged in.');
+      dispatch(setAuthenticated(true));
+      router.push('/');
     } else {
-      setMessage(data.message || 'Registration failed');
+      setMessage(result.message || 'Registration failed');
     }
   };
 
   return (
     <div className="auth-container">
       <h1>Register</h1>
-      <form onSubmit={handleRegister}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div>
-          <label htmlFor="username">Username:</label>
+          <label htmlFor="email">Email:</label>
           <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            type="email"
+            id="email"
+            {...register('email')}
           />
+          {errors.email && <p>{errors.email.message}</p>}
         </div>
         <div>
           <label htmlFor="password">Password:</label>
           <input
             type="password"
             id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            {...register('password')}
           />
+          {errors.password && <p>{errors.password.message}</p>}
         </div>
         <button type="submit">Register</button>
       </form>

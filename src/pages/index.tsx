@@ -6,7 +6,7 @@ const Home = () => (
     {/* <TopMenu /> */}
     {/* <NavigationMenu />
     <h1>Welcome to the Orders & Products App</h1> */}
-    {/* Home */}
+    Home
   </div>
 );
 

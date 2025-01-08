@@ -1,0 +1,29 @@
+[33mcommit a1d31e4a047ad0de2cb0096b66d82dd74b67e63e[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Anton Bondarenko <bondarenkoav2581.2@gmail.com>
+Date:   Tue Jan 7 13:57:08 2025 +0200
+
+    4 i18n
+
+[33mcommit 3f558a4d24d2c4234b820bc92bfffab6184b020a[m
+Author: Anton Bondarenko <bondarenkoav2581.2@gmail.com>
+Date:   Sun Jan 5 20:39:46 2025 +0200
+
+    3 Transitions, animations
+
+[33mcommit 1e0c491a4a3c21af26c9d6c01ea7b8e4e8e1ba66[m
+Author: Anton Bondarenko <bondarenkoav2581.2@gmail.com>
+Date:   Sun Jan 5 14:45:01 2025 +0200
+
+    2  REST, Bootstrap
+
+[33mcommit 8a9397a598c86a1a97ae2e28fa529683a674d8f6[m
+Author: Anton Bondarenko <bondarenkoav2581.2@gmail.com>
+Date:   Sat Jan 4 15:39:02 2025 +0200
+
+    1 Базова структура
+
+[33mcommit 9b4bd3a8714a6bb07850866a0ed36494b3ff40f4[m
+Author: Anton Bondarenko <bondarenkoav2581.2@gmail.com>
+Date:   Thu Jan 2 14:09:13 2025 +0200
+
+    Initial commit from Create Next App
