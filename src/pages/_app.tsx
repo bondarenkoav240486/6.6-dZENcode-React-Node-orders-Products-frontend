@@ -3,15 +3,17 @@ import { Provider, useDispatch, useSelector } from 'react-redux';
 import { store, RootState } from '../redux/store';
 import { setAuthenticated } from '../redux/slices/authSlice';
 import '../styles/globals.css';
-import NavigationMenu from '../components/NavigationMenu';
-import TopMenu from '../components/TopMenu';
-import LanguageSwitcher from '../components/LanguageSwitcher';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import '../i18n'; // Import the i18n configuration
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { useEffect, Suspense, lazy } from 'react';
+
+// Використання Lazy Loading для компонентів
+const NavigationMenu = lazy(() => import('../components/NavigationMenu'));
+const TopMenu = lazy(() => import('../components/TopMenu'));
+const LanguageSwitcher = lazy(() => import('../components/LanguageSwitcher'));
 
 function MyApp({ Component, pageProps }: any) {
   return (
@@ -42,7 +44,7 @@ function AppContent({ Component, pageProps }: any) {
   };
 
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <header>
         <div className="container d-flex justify-content-between py-2 align-items-center">
           <div>ORDERS&PRODUCTS</div>
@@ -78,7 +80,7 @@ function AppContent({ Component, pageProps }: any) {
           </AnimatePresence>
         </div>
       </div>
-    </>
+    </Suspense>
   );
 }
 

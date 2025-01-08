@@ -66,15 +66,6 @@ const Products = () => {
               transition={{ duration: 0.3 }}
             >
               <h3>{product.title}</h3>
-              {/* <p>Type: {product.type}</p> */}
-              {/* <p>Guarantee Start (en-US): {formatDate(product.guarantee.start, enUS)}</p>
-              <p>Guarantee Start (uk): {formatDate(product.guarantee.start, uk)}</p>
-              <p>Guarantee End (en-US): {formatDate(product.guarantee.end, enUS)}</p>
-              <p>Guarantee End (uk): {formatDate(product.guarantee.end, uk)}</p>
-              <p>Price (USD): ${product.price.find(p => p.symbol === 'USD')?.value}</p>
-              <p>Price (UAH): ₴{product.price.find(p => p.symbol === 'UAH')?.value}</p>
-              <p>Order Title: {order?.title}</p> */}
-
               <p>{t('type')}: {product.type}</p>
               <p>{t('guaranteeStart')} (en-US): {formatDate(product.guarantee.start, enUS)}</p>
               <p>{t('guaranteeStart')} (uk): {formatDate(product.guarantee.start, uk)}</p>

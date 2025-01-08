@@ -12,7 +12,7 @@ interface Price {
   isDefault: number;
 }
 
-interface Product {
+export interface Product {
   id: number;
   serialNumber: number;
   isNew: number;
