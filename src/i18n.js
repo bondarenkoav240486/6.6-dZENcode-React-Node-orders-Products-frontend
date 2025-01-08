@@ -16,6 +16,19 @@ i18n
       escapeValue: false, // react already safes from xss
     },
     debug: true, // Enable debug mode to see more logs
+    resources: {
+      en: {
+        common: {
+          allTypes: 'All Types',
+          type: 'Type',
+          guaranteeStart: 'Guarantee Start',
+          guaranteeEnd: 'Guarantee End',
+          priceUSD: 'Price (USD)',
+          priceUAH: 'Price (UAH)',
+          orderTitle: 'Order Title',
+        },
+      },
+    },
   });
 
 // Add event listeners for logging
