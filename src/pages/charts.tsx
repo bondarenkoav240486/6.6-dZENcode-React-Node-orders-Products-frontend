@@ -1,13 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Bar, Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement } from 'chart.js';
-import { useSelector } from 'react-redux';
-import { RootState } from '../redux/store';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState, AppDispatch } from '../redux/store';
+import { fetchOrders } from '../redux/slices/ordersSlice';
+import { fetchProducts } from '../redux/slices/productsSlice';
 import { calculateTotal } from '../utils/utils';
+import dynamic from 'next/dynamic';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
 
+// Динамічний імпорт компонента карти
+const Map = dynamic(() => import('../components/Map'), { ssr: false });
+
 const ChartsPage: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(fetchOrders());
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
   const orders = useSelector((state: RootState) => state.orders.orders);
   const products = useSelector((state: RootState) => state.products.products);
 
@@ -107,6 +120,10 @@ const ChartsPage: React.FC = () => {
       <div style={{ width: '50%', margin: '0 auto' }}>
         <h2>Percentage of Total Value by Product Type</h2>
         <Pie data={pieData} options={options} />
+      </div>
+      <div style={{ width: '75%', margin: '0 auto' }}>
+        <h2>Map</h2>
+        <Map />
       </div>
     </div>
   );
