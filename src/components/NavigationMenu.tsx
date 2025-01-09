@@ -5,6 +5,7 @@ const NavigationMenu = () => (
     <Link href="/orders">Orders</Link>
     <Link href="/products">Products</Link>
     <Link href="/">Home</Link>
+    <Link href="/charts">Charts</Link>
   </nav>
 );
 
