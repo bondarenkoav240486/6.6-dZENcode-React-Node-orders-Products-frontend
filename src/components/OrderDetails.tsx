@@ -20,7 +20,7 @@ return (
     <div>
       {/* <h3>{t('orderDetails')}</h3> */}
       <h3>{order.title}</h3>
-      <p>{t('productsCount')}: {calculateProductCount(order.id, products)}</p>
+      <p>{t('productsCount')}: {calculateProductCount(order.orderId, products)}</p>
       <p>{t('date')} (en-US): {formatDate(order.date, enUS)}</p>
       <p>{t('date')} (uk): {formatDate(order.date, uk)}</p>
       <p>{t('totalUSD')}: ${calculateTotal(order.orderId, 'USD', products).toFixed(2)}</p>

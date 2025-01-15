@@ -10,7 +10,7 @@ const NavigationMenu: React.FC = () => {
       <Link href="/orders">Orders</Link>
       <Link href="/products">Products</Link>
       <Link href="/">Home</Link>
-      <Link href="/charts">Charts</Link>
+      <Link href="/charts">Charts & Map</Link>
       {isAuthenticated && <Link href="/user-cabinet">User Cabinet</Link>}
     </nav>
   );

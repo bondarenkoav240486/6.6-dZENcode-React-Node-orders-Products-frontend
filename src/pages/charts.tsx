@@ -108,7 +108,7 @@ const ChartsPage: React.FC = () => {
 
   return (
     <div>
-      <h1>Charts</h1>
+      <h1>Charts & Map</h1>
       <div style={{ width: '50%', margin: '0 auto' }}>
         <h2>Total UAH per Order</h2>
         <Bar data={totalUAHData} options={options} />

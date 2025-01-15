@@ -14,6 +14,8 @@ interface Price {
 
 export interface Product {
   id: number;
+  productId: number;
+
   serialNumber: number;
   isNew: number;
   photo: string;

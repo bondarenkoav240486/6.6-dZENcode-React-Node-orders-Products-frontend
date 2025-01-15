@@ -6,6 +6,7 @@ import { format } from 'date-fns';
 import { enUS, uk, Locale } from 'date-fns/locale';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useTranslation } from 'next-i18next';
+import { fetchOrders } from '@/redux/slices/ordersSlice';
 
 const Products = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -14,10 +15,11 @@ const Products = () => {
   const [selectedType, setSelectedType] = useState<string>('');
   const { t } = useTranslation('common');
   const [translatedAllTypes, setTranslatedAllTypes] = useState('');
-
+// debugger
 
   useEffect(() => {
     dispatch(fetchProducts());
+    dispatch(fetchOrders());
   }, [dispatch]);
 
   useEffect(() => {
@@ -39,6 +41,7 @@ const Products = () => {
 
   return (
     <div>
+      <h2>{t('Products')}</h2>
       <motion.select
         onChange={handleTypeChange}
         value={selectedType}
@@ -49,23 +52,24 @@ const Products = () => {
         <option value="">{translatedAllTypes}</option>
         {[...new Set(products.map(product => product.type))].map(type => (
           <option key={type} value={type}>
-            {type}
+            {/* {type} */}
+            {t('allTypes')}
           </option>
         ))}
       </motion.select>
 
       <AnimatePresence>
         {filteredProducts.map(product => {
-          const order = orders.find(order => order.id === product.order);
+          const order = orders.find(order => order.orderId === product.order);
           return (
             <motion.div
-              key={product.id}
+              key={product.productId}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
               transition={{ duration: 0.3 }}
             >
-              <h3>{product.title}</h3>
+              {/* <h3>{Product.title}</h3>
               <p>{t('type')}: {product.type}</p>
               <p>{t('guaranteeStart')} (en-US): {formatDate(product.guarantee.start, enUS)}</p>
               <p>{t('guaranteeStart')} (uk): {formatDate(product.guarantee.start, uk)}</p>
@@ -73,7 +77,7 @@ const Products = () => {
               <p>{t('guaranteeEnd')} (uk): {formatDate(product.guarantee.end, uk)}</p>
               <p>{t('priceUSD')}: ${product.price.find(p => p.symbol === 'USD')?.value}</p>
               <p>{t('priceUAH')}: ₴{product.price.find(p => p.symbol === 'UAH')?.value}</p>
-              <p>{t('orderTitle')}: {order?.title}</p>
+              <p>{t('orderTitle')}: {order?.title}</p> */}
             </motion.div>
           );
         })}

@@ -32,20 +32,20 @@ i18n
   });
 
 // Add event listeners for logging
-// i18n.on('languageChanged', (lng) => {
-//   console.log(`Language changed to: ${lng}`);
-// });
+i18n.on('languageChanged', (lng) => {
+  console.log(`Language changed to: ${lng}`);
+});
 
-// i18n.on('loaded', (loaded) => {
-//   console.log('Loaded translations:', loaded);
-// });
+i18n.on('loaded', (loaded) => {
+  console.log('Loaded translations:', loaded);
+});
 
-// i18n.on('failedLoading', (lng, ns, msg) => {
-//   console.error(`Failed loading ${ns} namespace for ${lng}: ${msg}`);
-// });
+i18n.on('failedLoading', (lng, ns, msg) => {
+  console.error(`Failed loading ${ns} namespace for ${lng}: ${msg}`);
+});
 
-// i18n.on('missingKey', (lng, ns, key, res) => {
-//   console.warn(`Missing key "${key}" in namespace "${ns}" for language "${lng}"`);
-// });
+i18n.on('missingKey', (lng, ns, key, res) => {
+  console.warn(`Missing key "${key}" in namespace "${ns}" for language "${lng}"`);
+});
 
 export default i18n;
