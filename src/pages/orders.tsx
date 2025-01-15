@@ -20,7 +20,6 @@ const OrdersPage = () => {
   const products = useSelector((state: RootState) => state.products.products);
   const [selectedOrder, setSelectedOrder] = useState<number | null>(null);
   const [showPopup, setShowPopup] = useState<boolean>(false);
-
   useEffect(() => {
     dispatch(fetchOrders());
     dispatch(fetchProducts());
@@ -33,15 +32,15 @@ const OrdersPage = () => {
       setShowPopup(false);
     }
   };
-
+  products.filter(product => product.order === selectedOrder)
   return (
     <div className='orders d-flex '>
       <div>
         {orders.map(order => (
           <motion.div
-            key={order.id}
+            key={order.orderId}
             className='d-flex'
-            onClick={() => setSelectedOrder(order.id)}
+            onClick={() => setSelectedOrder(order.orderId)}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
@@ -64,7 +63,7 @@ const OrdersPage = () => {
           >
             <Suspense fallback={<div>Loading...</div>}>
               <OrderDetails
-                order={orders.find(order => order.id === selectedOrder)!}
+                order={orders.find(order => order.orderId === selectedOrder)!}
                 products={products.filter(product => product.order === selectedOrder)}
                 t={t}
                 setShowPopup={setShowPopup}

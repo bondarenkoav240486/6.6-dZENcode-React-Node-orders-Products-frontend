@@ -1,13 +1,7 @@
-import NavigationMenu from '../components/NavigationMenu';
-// import TopMenu from '../components/TopMenu';
+import Home from './Home';
 
-const Home = () => (
-  <div>
-    {/* <TopMenu /> */}
-    {/* <NavigationMenu />
-    <h1>Welcome to the Orders & Products App</h1> */}
-    Home
-  </div>
-);
+const IndexPage: React.FC = () => {
+  return <Home />;
+};
 
-export default Home;
+export default IndexPage;
