@@ -7,6 +7,10 @@ import { fetchOrders } from '../redux/slices/ordersSlice';
 import { fetchProducts } from '../redux/slices/productsSlice';
 import { calculateTotal } from '../utils/utils';
 import dynamic from 'next/dynamic';
+import { useTranslation } from 'next-i18next';
+import { GetServerSideProps } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
 
@@ -15,6 +19,7 @@ const Map = dynamic(() => import('../components/Map'), { ssr: false });
 
 const ChartsPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation('common');
 
   useEffect(() => {
     dispatch(fetchOrders());
@@ -25,8 +30,8 @@ const ChartsPage: React.FC = () => {
   const products = useSelector((state: RootState) => state.products.products);
 
   const orderTitles = orders.map(order => order.title);
-  const totalUAH = orders.map(order => calculateTotal(order.id, 'UAH', products));
-  const totalUSD = orders.map(order => calculateTotal(order.id, 'USD', products));
+  const totalUAH = orders.map(order => calculateTotal(order.orderId, 'UAH', products));
+  const totalUSD = orders.map(order => calculateTotal(order.orderId, 'USD', products));
 
   const productTypes = Array.from(new Set(products.map(product => product.type)));
   const totalValueByType = productTypes.map(type => {
@@ -93,36 +98,24 @@ const ChartsPage: React.FC = () => {
     ],
   };
 
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top' as const,
-      },
-      title: {
-        display: true,
-        text: 'Charts',
-      },
-    },
-  };
-
   return (
-    <div>
-      <h1>Charts & Map</h1>
-      <div style={{ width: '50%', margin: '0 auto' }}>
-        <h2>Total UAH per Order</h2>
-        <Bar data={totalUAHData} options={options} />
+    <div className="container  p-4">
+      <h2 className="mb-4">{t('chartsAndMap')}</h2>
+      <div className="row">
+        <div className="col-md-6 mb-4">
+          <h4 className="text-center">{t('totalUAH')}</h4>
+          <Bar data={totalUAHData} />
+        </div>
+        <div className="col-md-6 mb-4">
+          <h4 className="text-center">{t('totalUSD')}</h4>
+          <Bar data={totalUSDData} />
+        </div>
+        <div className="col-md-6 mt-4">
+          <h4 className="text-center">{t('percentageByProductType')}</h4>
+          <Pie data={pieData} />
+        </div>
       </div>
-      <div style={{ width: '50%', margin: '0 auto' }}>
-        <h2>Total USD per Order</h2>
-        <Bar data={totalUSDData} options={options} />
-      </div>
-      <div style={{ width: '50%', margin: '0 auto' }}>
-        <h2>Percentage of Total Value by Product Type</h2>
-        <Pie data={pieData} options={options} />
-      </div>
-      <div style={{ width: '75%', margin: '0 auto' }}>
-        <h2>Map</h2>
+      <div className="mt-5">
         <Map />
       </div>
     </div>

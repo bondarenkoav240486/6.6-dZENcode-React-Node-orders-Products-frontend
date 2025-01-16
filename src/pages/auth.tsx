@@ -1,23 +1,25 @@
-import { useState } from 'react';
-import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
-import { setAuthenticated } from '../redux/slices/authSlice';
+import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
+import { setAuthenticated } from '../redux/slices/authSlice';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { useTranslation } from 'next-i18next';
 
 interface IFormInput {
   email: string;
   password: string;
 }
 
-// Створення схеми валідації з використанням Yup
 const schema = yup.object().shape({
-  email: yup.string().email('Invalid email address').required('Email is required'),
-  password: yup.string().min(8, 'Пароль повинен містити мінімум 8 символів').required('Password is required'),
+  email: yup.string().email().required(),
+  password: yup.string().min(6).required(),
 });
 
-const AuthPage = () => {
+const AuthPage: React.FC = () => {
+  const { t } = useTranslation('common');
   const { register, handleSubmit, formState: { errors } } = useForm<IFormInput>({
     resolver: yupResolver(schema),
   });
@@ -45,30 +47,32 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="auth-container">
-      <h1>Login</h1>
+    <div className="container mt-5">
+      <h2>{t('login')}</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label htmlFor="email">Email:</label>
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">{t('email')}</label>
           <input
-            type="email"
             id="email"
+            type="email"
+            className={`form-control ${errors.email ? 'is-invalid' : ''}`}
             {...register('email')}
           />
-          {errors.email && <p>{errors.email.message}</p>}
+          {errors.email && <div className="invalid-feedback">{errors.email.message}</div>}
         </div>
-        <div>
-          <label htmlFor="password">Password:</label>
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">{t('password')}</label>
           <input
-            type="password"
             id="password"
+            type="password"
+            className={`form-control ${errors.password ? 'is-invalid' : ''}`}
             {...register('password')}
           />
-          {errors.password && <p>{errors.password.message}</p>}
+          {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
         </div>
-        <button type="submit">Login</button>
+        <button type="submit" className="btn btn-primary">{t('login')}</button>
       </form>
-      {message && <p>{message}</p>}
+      {message && <div className="alert alert-danger mt-3">{message}</div>}
     </div>
   );
 };

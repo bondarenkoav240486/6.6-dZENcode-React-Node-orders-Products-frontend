@@ -17,5 +17,21 @@
   "guaranteeEnd": "Guarantee End",
   "priceUSD": "Price (USD)",
   "priceUAH": "Price (UAH)",
-  "orderTitle": "Order Title"
+  "orderTitle": "Order Title",
+  "English": "English",
+  "Ukrainian": "Ukrainian",
+  "home": "Home",
+  "orders": "Orders",
+  "userCabinet": "User Cabinet",
+  "activeSessions": "Active Sessions",
+  "login": "Login",
+  "email": "Email",
+  "password": "Password",
+  "register": "Register",
+  "percentageByProductType": "Percentage of Total Value by Product Type",
+  "welcomeTitle": "Welcome to Our Project",
+  "welcomeDescription": "This project is built using the following technologies and tools:",
+  "andMore": "and more...",
+  "exploreMessage": "Explore the different pages to see these technologies in action."
+
 }

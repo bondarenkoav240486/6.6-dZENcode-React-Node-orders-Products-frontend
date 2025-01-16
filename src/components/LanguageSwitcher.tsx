@@ -1,21 +1,43 @@
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
+import { FC, useEffect, useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-const LanguageSwitcher = () => {
-  const router = useRouter();
-  const { i18n } = useTranslation();
+const LanguageSwitcher: FC = () => {
+   
+   const router = useRouter();
+   const [hydrated, setHydrated] = useState(false);
+   const { i18n } = useTranslation();
+   const { t } = useTranslation('common');
 
-  const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
-    router.push(router.pathname, router.asPath, { locale: lng });
-  };
+   useEffect(() => {
+      setHydrated(true); // This will be executed only on the client side
+   }, []);
 
-  return (
-    <div>
-      <button onClick={() => changeLanguage('en')}>English</button>
-      <button onClick={() => changeLanguage('uk')}>Українська</button>
-    </div>
-  );
+   const changeLanguage = (lng: string) => {
+      i18n.changeLanguage(lng);
+      router.push(router.pathname, router.asPath, { locale: lng });
+   };
+
+   return (
+      <div className="d-flex justify-content-center my-3">
+         <button
+            className={`btn mx-2 ${hydrated? i18n.language === 'en' ? 'btn-primary' : 'btn-outline-primary' : ''}`}
+            onClick={() => changeLanguage('en')}
+         >
+            {t('English')}
+            {/* {hydrated && t('English')} */}
+         </button>
+         <button
+            className={`btn mx-2 ${hydrated ? i18n.language === 'uk' ? 'btn-primary' : 'btn-outline-secondary' : ''}`}
+            onClick={() => changeLanguage('uk')}
+         >
+            {t('Ukrainian')}
+            {/* {hydrated && t('Ukrainian')} */}
+         </button>
+      </div>
+   );
 };
+
 
 export default LanguageSwitcher;

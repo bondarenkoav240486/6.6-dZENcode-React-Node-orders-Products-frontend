@@ -5,6 +5,10 @@ import { setAuthenticated } from '../redux/slices/authSlice';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useTranslation } from 'next-i18next';
+import { GetServerSideProps } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 interface IFormInput {
   email: string;
@@ -14,10 +18,11 @@ interface IFormInput {
 // Створення схеми валідації з використанням Yup
 const schema = yup.object().shape({
   email: yup.string().email('Invalid email address').required('Email is required'),
-  password: yup.string().min(8, 'Пароль повинен містити мінімум 8 символів').required('Password is required'),
+  password: yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
 });
 
-const RegisterPage = () => {
+const RegisterPage: React.FC = () => {
+  const { t } = useTranslation('common');
   const { register, handleSubmit, formState: { errors } } = useForm<IFormInput>({
     resolver: yupResolver(schema),
   });
@@ -35,8 +40,8 @@ const RegisterPage = () => {
     });
 
     const result = await response.json();
-    if (response.ok) {
-      setMessage('Registration successful. You are logged in.');
+    if (response.ok && result.token) {
+      localStorage.setItem('token', result.token);
       dispatch(setAuthenticated(true));
       router.push('/');
     } else {
@@ -45,32 +50,40 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="auth-container">
-      <h1>Register</h1>
+    <div className="container mt-5">
+      <h2>{t('register')}</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label htmlFor="email">Email:</label>
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">{t('email')}</label>
           <input
-            type="email"
             id="email"
+            type="email"
+            className={`form-control ${errors.email ? 'is-invalid' : ''}`}
             {...register('email')}
           />
-          {errors.email && <p>{errors.email.message}</p>}
+          {errors.email && <div className="invalid-feedback">{errors.email.message}</div>}
         </div>
-        <div>
-          <label htmlFor="password">Password:</label>
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">{t('password')}</label>
           <input
-            type="password"
             id="password"
+            type="password"
+            className={`form-control ${errors.password ? 'is-invalid' : ''}`}
             {...register('password')}
           />
-          {errors.password && <p>{errors.password.message}</p>}
+          {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
         </div>
-        <button type="submit">Register</button>
+        <button type="submit" className="btn btn-primary">{t('register')}</button>
       </form>
-      {message && <p>{message}</p>}
+      {message && <div className="alert alert-danger mt-3">{message}</div>}
     </div>
   );
 };
+
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale!, ['common'])),
+  },
+});
 
 export default RegisterPage;

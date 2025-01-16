@@ -11,7 +11,6 @@ import { formatDate, calculateProductCount, calculateTotal } from '../utils/util
 
 // Використання Lazy Loading для компонентів
 const OrderDetails = lazy(() => import('../components/OrderDetails'));
-// const ProductList = lazy(() => import('../components/ProductList'));
 
 const OrdersPage = () => {
   const { t } = useTranslation('common');
@@ -35,7 +34,7 @@ const OrdersPage = () => {
   products.filter(product => product.order === selectedOrder)
   return (
     <div className='orders d-flex '>
-      <div>
+      <div className='orders_list'>
         {orders.map(order => (
           <motion.div
             key={order.orderId}
@@ -46,7 +45,10 @@ const OrdersPage = () => {
             exit={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.3 }}
           >
-            <h3>{order.title}</h3>
+            <h5>{order.title}</h5>
+            <p className="card-text">{t('productsCount')}: {calculateProductCount(order.orderId, products)}</p>
+            <p className="card-text">{t('date')} (en-US): {formatDate(order.date, enUS)}</p>
+
           </motion.div>
         ))}
       </div>

@@ -7,8 +7,8 @@ const createJestConfig = nextJest({
 const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest', // Використовуйте ts-jest для TypeScript
-    '^.+\\.(js|jsx)$': 'babel-jest', // Використовуйте babel-jest для JavaScript
+    '^.+\\.(ts|tsx)$': 'ts-jest', //  ts-jest для TypeScript
+    '^.+\\.(js|jsx)$': 'babel-jest', //  babel-jest для JavaScript
   },
   moduleNameMapper: {
     '^.+\\.(css|scss|sass)$': 'identity-obj-proxy',
