@@ -42,10 +42,4 @@ const Home: React.FC = () => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
-  props: {
-    ...(await serverSideTranslations(locale!, ['common'])),
-  },
-});
-
 export default Home;

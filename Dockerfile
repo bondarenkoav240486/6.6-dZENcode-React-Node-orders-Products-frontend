@@ -1,23 +1,24 @@
-# Встановлюємо базовий образ
-FROM node:16-alpine
+# Вказуємо базовий образ, що містить Node.js
+FROM node:20-alpine
 
-# Встановлюємо робочу директорію
-WORKDIR /app
+# Встановлюємо змінну середовища для створення каталогу додатку
+ENV APP_HOME=/app
+WORKDIR $APP_HOME
 
-# Копіюємо package.json та package-lock.json
+# Копіюємо package.json та package-lock.json (або yarn.lock) для встановлення залежностей
 COPY package*.json ./
 
 # Встановлюємо залежності
 RUN npm install
 
-# Копіюємо всі файли проекту
+# Копіюємо весь проект у робочий каталог
 COPY . .
 
-# Будуємо проект
+# Будуємо Next.js проект
 RUN npm run build
 
-# Виставляємо порт
-EXPOSE 3000
+# Вказуємо порт, який буде використовуватись додатком
+EXPOSE 80
 
 # Запускаємо додаток
 CMD ["npm", "start"]
