@@ -32,6 +32,8 @@
   "welcomeTitle": "Welcome to Our Project",
   "welcomeDescription": "This project is built using the following technologies and tools:",
   "andMore": "and more...",
-  "exploreMessage": "Explore the different pages to see these technologies in action."
-
+  "exploreMessage": "Explore the different pages to see these technologies in action.",
+  "filterByType": "Filter by Type",
+  "type1": "Type 1",
+  "type2": "Type 2"
 }
