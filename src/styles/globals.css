@@ -66,3 +66,7 @@ header {
 .orders_list .d-flex {
   margin-bottom: 1rem;
 }
+
+.order_string {
+  cursor: pointer;
+}

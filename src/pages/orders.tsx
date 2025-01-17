@@ -38,7 +38,7 @@ const OrdersPage = () => {
         {orders.map(order => (
           <motion.div
             key={order.orderId}
-            className='d-flex'
+            className='d-flex order_string'
             onClick={() => setSelectedOrder(order.orderId)}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

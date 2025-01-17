@@ -4,6 +4,7 @@ Dockerfile
 .dockerignore
 .next
 # .env
+build
 
 **/*.test.js
 **/*.test.ts
