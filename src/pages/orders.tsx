@@ -9,7 +9,6 @@ import { useTranslation } from 'next-i18next';
 import { enUS, uk } from 'date-fns/locale';
 import { formatDate, calculateProductCount, calculateTotal } from '../utils/utils';
 
-// Використання Lazy Loading для компонентів
 const OrderDetails = lazy(() => import('../components/OrderDetails'));
 
 const OrdersPage = () => {

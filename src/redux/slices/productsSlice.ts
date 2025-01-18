@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+
 interface Guarantee {
   start: string;
   end: string;
@@ -37,7 +39,8 @@ const initialState: ProductsState = {
 };
 
 export const fetchProducts = createAsyncThunk('products/fetchProducts', async () => {
-  const response = await axios.get('http://localhost:3001/api/products');
+  // const response = await axios.get('http://localhost:3001/api/products');
+  const response = await axios.get(`${API_URL}/api/products`);
   return response.data;
 });
 
