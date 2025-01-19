@@ -61,7 +61,7 @@ NEXT_PUBLIC_API_URL=http://localhost:3001
 
  # Для бекенду
 cd backend
-npm run dev
+npm start
 
 # Для фронтенду
 cd ../frontend
