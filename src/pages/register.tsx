@@ -47,7 +47,6 @@ const RegisterPage: React.FC = () => {
       } else {
          setMessage(result.message || 'Registration failed');
       }
-      // debugger
    };
 
    return (
